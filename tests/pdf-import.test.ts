@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import { jsPDF } from 'jspdf';
+import { extractPdfText } from '../lib/pdf-text';
+import { parseConfigurationText } from '../lib/configuration-import';
+
+const file = (pdf: jsPDF) => new File([pdf.output('arraybuffer')], 'sample-order.pdf', { type: 'application/pdf' });
+const pdf = new jsPDF();
+pdf.text(['Your configuration', 'R2 Performance', 'Exterior: Glacier White', 'Interior: Black Crater Signature', 'Wheels: 21-inch Liquid Tungsten', 'VIN: 7PD2EAAB0VN000001'], 20, 20);
+pdf.addPage();
+pdf.text(['Accessories', 'R2 Cargo Cover $200.00', 'R2 All-Weather Floor Mats $180.00', 'Recommended: R2 Cargo Crossbars'], 20, 20);
+const progress: number[] = [];
+const extracted = await extractPdfText(file(pdf), page => progress.push(page));
+assert.equal(extracted.pages, 2); assert.equal(extracted.emptyPages, 0); assert.deepEqual(progress, [1, 2]);
+const parsed = parseConfigurationText(extracted.text);
+assert.equal(parsed.fields.find(field => field.field === 'paint')?.candidates[0].value, 'Glacier White');
+assert.equal(parsed.fields.find(field => field.field === 'vin')?.candidates[0].value, '7PD2EAAB0VN000001');
+assert.equal(parsed.accessories.length, 2);
+await assert.rejects(extractPdfText(file(new jsPDF())), /no selectable text/);
+await assert.rejects(extractPdfText(new File(['not a PDF'], 'invalid.pdf')), /not a readable PDF/);
+await assert.rejects(extractPdfText(new File(['text'], 'wrong.txt')), /Choose a PDF/);
+const tooMany = new jsPDF(); for (let i = 1; i < 21; i++) tooMany.addPage();
+await assert.rejects(extractPdfText(file(tooMany)), /20 pages/);
+await assert.rejects(extractPdfText(new File([new Uint8Array(12 * 1024 * 1024 + 1)], 'large.pdf')), /under 12 MB/);
+const mixed = new jsPDF(); mixed.text('Exterior: Launch Green', 20, 20); mixed.addPage();
+assert.equal((await extractPdfText(file(mixed))).emptyPages, 1);
+const abort = new AbortController(); abort.abort();
+await assert.rejects(extractPdfText(file(pdf), undefined, abort.signal), /canceled/);
+console.log('PDF import passed: real multipage extraction, configuration recognition, unreadable/empty/mixed PDFs, size/page limits and cancellation.');
