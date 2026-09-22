@@ -1,0 +1,700 @@
+{
+  "version": 1,
+  "sourceMetadata": {
+    "primary": {
+      "title": "Rivian R2 — New-vehicle delivery checklist, Rev 5",
+      "type": "user-provided PDF",
+      "fileName": "Rivian-R2-PDI-Checklist.pdf",
+      "pages": 4,
+      "adaptation": "PDF identifies itself as adapted from DIY Wrap Club v13; not an official Rivian form."
+    },
+    "referenceUrl": "https://www.diywrapclub.com/a/blog/rivian-r2-delivery-day-checklist-what-to-inspect-on-day-1-free-pdf-download",
+    "coverage": "Reworded and split into mobile inspection tasks from all substantive rows and handover fields in the supplied four-page PDF.",
+    "limitations": [
+      "The PDF claims coverage of 105 original points and 28 report topics but does not supply the research pages or underlying reports; these counts are not independently verified.",
+      "Feature mentions are checklist prompts, not confirmation of equipment for every R2 configuration. Use not applicable for absent or unpurchased equipment.",
+      "The PDF does not include a plug-in charging-session test or battery state-of-charge record; add these separately with transparent provenance.",
+      "The PDF does not supply objective numeric tolerances for panel gaps, paint, noise or other inspection judgments."
+    ],
+    "statusGuidance": {
+      "good": "Checked and satisfactory",
+      "minor": "Document the concern and obtain a written remedy",
+      "major": "Resolve significant damage, critical faults or unsafe operation with staff before accepting",
+      "not_tested": "The check was not performed or conditions did not permit it",
+      "not_applicable": "Feature is absent, unpurchased or does not apply"
+    },
+    "criticalMeaning": "A safety-relevant or must-resolve inspection area, not an automatic issue severity. Severity depends on the observed condition.",
+    "supplements": [
+      {
+        "title": "R2 delivery owner account: hood, paint and bezel",
+        "url": "https://www.reddit.com/r/RivianR2/comments/1wbci81/our_r2_delivery_day_experience/"
+      },
+      {
+        "title": "R2 delivery owner account: keycards and trim",
+        "url": "https://www.reddit.com/r/RivianR2/comments/1vtqafj/r2_delivery_day_impressions_mostly_great_a_few/"
+      },
+      {
+        "title": "R2 delivery checklist discussion",
+        "url": "https://www.reddit.com/r/RivianR2/comments/1v1skrh/r2_delivery_checklist/"
+      },
+      {
+        "title": "Official R2 specifications",
+        "url": "https://rivian.com/r2"
+      },
+      {
+        "title": "Official R2 color palette",
+        "url": "https://rivian.com/stories/r2-color-palette-paint-finishes-2026"
+      }
+    ],
+    "supplementNotes": "Battery state-of-charge and a supervised charging demonstration are practical added checks. Owner reports are anecdotal and do not imply defect rates. After-wake checks group and reinforce retests in the PDF."
+  },
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Your R2",
+      "subtitle": "Match the vehicle and delivery details to your order.",
+      "items": [
+        {
+          "id": "vin-match",
+          "title": "VIN matches everywhere",
+          "detail": "Compare the windshield VIN, driver-door label and delivery paperwork character by character.",
+          "critical": true
+        },
+        {
+          "id": "configuration",
+          "title": "Configuration matches your order",
+          "detail": "Check exterior color, interior, wheels, options and paid upgrades against your final order.",
+          "critical": true
+        },
+        {
+          "id": "odometer",
+          "title": "Odometer recorded",
+          "detail": "Photograph the mileage and driver display. Ask the specialist to explain mileage you were not expecting."
+        },
+        {
+          "id": "included-equipment",
+          "title": "All purchased equipment is present",
+          "detail": "Use your order as the reference for the charger, tire kit or inflator, spare tire, crossbars and other accessories. Record missing items; do not assume every item is standard.",
+          "conditional": "Only included or purchased equipment"
+        },
+        {
+          "id": "battery-at-handoff",
+          "title": "Battery charge for the trip home",
+          "detail": "Record the state of charge in Vehicle details. Confirm there is enough energy for your planned drive and charging stop; ask staff to charge if needed."
+        }
+      ]
+    },
+    {
+      "id": "exterior",
+      "title": "Exterior",
+      "subtitle": "Walk around twice in daylight with the body clean and dry.",
+      "items": [
+        {
+          "id": "paint",
+          "title": "Paint and body finish",
+          "detail": "Look along every panel for dents, chips, scratches, stains, overspray or other paint defects."
+        },
+        {
+          "id": "color-match",
+          "title": "Panel colors match",
+          "detail": "Compare adjacent panels and bumpers in daylight from multiple viewing angles."
+        },
+        {
+          "id": "panel-gaps",
+          "title": "Panel alignment and clearances",
+          "detail": "Compare gaps side to side. Record conspicuous unevenness and have rubbing or binding assessed before handover."
+        },
+        {
+          "id": "exterior-trim",
+          "title": "Badges and exterior trim",
+          "detail": "Check badges, moldings and upper front-door trim for secure seating and consistent alignment. Look for loose insulation, lifted seals and residue."
+        },
+        {
+          "id": "loading-edges",
+          "title": "Rear loading edges",
+          "detail": "Inspect the rear bumper, loading sill and liftgate edges for scuffs, dents and impact marks."
+        },
+        {
+          "id": "glass",
+          "title": "Windshield and side/rear glass",
+          "detail": "Wipe away smudges, then inspect inside and out for cracks, scratches, distortion, cloudiness or separation at the glass edges.",
+          "critical": true
+        },
+        {
+          "id": "roof-glass",
+          "title": "Roof glass",
+          "detail": "Inspect from inside and outside where visible for cracks, scratches and marks within the glass.",
+          "critical": true,
+          "conditional": "If glass roof is fitted"
+        },
+        {
+          "id": "camera-lenses",
+          "title": "Exterior camera lenses",
+          "detail": "Check visible lenses for cracking, damage and leftover protective film that could block the image.",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "id": "wheels",
+      "title": "Wheels",
+      "subtitle": "Inspect from a safe standing or crouching position.",
+      "items": [
+        {
+          "id": "wheel-finish",
+          "title": "All four wheels",
+          "detail": "Inspect each rim, including the edge, for curb marks, scratches, chips and other damage."
+        },
+        {
+          "id": "tires",
+          "title": "Tire condition and fitment",
+          "detail": "Inspect tread and sidewalls for cuts, bulges or damage. Confirm the fitted tires match the specification for the vehicle.",
+          "critical": true
+        },
+        {
+          "id": "tire-pressure",
+          "title": "Pressures set to the door label",
+          "detail": "Ask staff to verify and set all tire pressures using the vehicle door-label specification.",
+          "critical": true
+        },
+        {
+          "id": "wheel-fasteners",
+          "title": "Visible wheel fasteners",
+          "detail": "Confirm visible lug nuts are present. Have staff assess anything that appears loose or unusual; do not attempt to judge torque by sight.",
+          "critical": true
+        },
+        {
+          "id": "valve-caps",
+          "title": "Tire valve caps",
+          "detail": "Check that a cap is present on each tire valve."
+        },
+        {
+          "id": "visible-brakes",
+          "title": "Visible brake condition",
+          "detail": "Look for apparent damage and ask staff to assess anything concerning. A visual look does not verify brake performance."
+        },
+        {
+          "id": "underbody",
+          "title": "Underbody and wheel liners",
+          "detail": "From the perimeter, look for loose clips, hanging panels, liner damage and unexplained drips. Ask staff to identify fluids. Never crawl beneath an unsupported vehicle.",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "id": "lights",
+      "title": "Lights",
+      "subtitle": "Ask a specialist to help observe lights around the parked car.",
+      "items": [
+        {
+          "id": "headlights",
+          "title": "Low and high beams",
+          "detail": "Watch both headlights for 20–30 seconds on each setting, then check again for flickering or intermittent operation.",
+          "critical": true
+        },
+        {
+          "id": "running-signals",
+          "title": "Light bar, tail lamps and turn signals",
+          "detail": "Walk around to confirm the fitted light bar, tail lamps and left/right indicators illuminate correctly.",
+          "critical": true
+        },
+        {
+          "id": "hazards",
+          "title": "Hazard lights",
+          "detail": "Activate the hazards and confirm the indicators operate on both sides of the vehicle.",
+          "critical": true
+        },
+        {
+          "id": "brake-reverse-lights",
+          "title": "Brake and reverse lights",
+          "detail": "With staff controlling the stationary vehicle, verify brake and reverse lamps. Keep observers beside the car and out of its travel path.",
+          "critical": true
+        },
+        {
+          "id": "adaptive-headlights",
+          "title": "Adaptive lighting demonstration",
+          "detail": "Ask staff about the fitted adaptive lighting functions. Mark not tested if darkness or suitable conditions are unavailable.",
+          "conditional": "Only when fitted and test conditions permit"
+        }
+      ]
+    },
+    {
+      "id": "openings",
+      "title": "Openings",
+      "subtitle": "Operate everything yourself; keep hands clear of moving panels.",
+      "items": [
+        {
+          "id": "doors-handles",
+          "title": "Every door and handle",
+          "detail": "Open each door from inside and outside. Check handles, secure latching and clearance from neighboring panels.",
+          "critical": true
+        },
+        {
+          "id": "weather-seals",
+          "title": "Door, glass and hood seals",
+          "detail": "Inspect door/glass seals and hood/A-pillar seals for lifting, pinching, tears, gaps or adhesive residue.",
+          "critical": true
+        },
+        {
+          "id": "side-windows",
+          "title": "Side windows and switches",
+          "detail": "Fully lower and raise every side window from the driver controls and its local switch. Test a combined all-window control if available.",
+          "critical": true
+        },
+        {
+          "id": "rear-window",
+          "title": "Rear glass operation",
+          "detail": "Run the rear glass through two complete opening/closing cycles using its own and any combined controls. Check movement, noise, seals and full closure.",
+          "critical": true,
+          "conditional": "If opening rear glass is fitted"
+        },
+        {
+          "id": "liftgate",
+          "title": "Liftgate travel and latching",
+          "detail": "Open and close twice. Check smooth travel, reliable latching, rubbing or unexpected reversal, and loose stops, strut covers or trim.",
+          "critical": true
+        },
+        {
+          "id": "charge-door",
+          "title": "Charge-port door",
+          "detail": "Open and close it. Inspect fit, panel alignment and visible damage."
+        },
+        {
+          "id": "charging-session",
+          "title": "Start and stop a charging session",
+          "detail": "Ask staff to connect an available compatible charger. Confirm charging starts without a fault, power is delivered, and the connector releases after stopping. Mark not tested if no charger is available.",
+          "critical": true
+        },
+        {
+          "id": "frunk-operation",
+          "title": "Frunk release, support and latch",
+          "detail": "Have staff demonstrate the correct release and lift. Check that the hood remains supported, moves without concerning noises and closes securely using the prescribed method.",
+          "critical": true
+        },
+        {
+          "id": "frunk-finish",
+          "title": "Frunk finish and washer-fluid fill",
+          "detail": "Inspect storage plastics and trim, and have staff point out the windshield washer-fluid fill."
+        },
+        {
+          "id": "moisture",
+          "title": "Cabin and cargo stay dry",
+          "detail": "Feel beneath the cargo floor, carpets and rear footwells; inspect headliner corners for moisture or stains. Ask staff to resolve unexplained dampness.",
+          "critical": true
+        },
+        {
+          "id": "cargo-storage",
+          "title": "Cargo compartments and floor",
+          "detail": "Open storage compartments and lids. Inspect the load floor and surrounding trim for damage and loose pieces."
+        },
+        {
+          "id": "power-outlets",
+          "title": "Fitted power outlets",
+          "detail": "With staff enabling power as needed, test fitted 12V or household-style outlets using a suitable small device.",
+          "conditional": "Only outlets fitted to this vehicle"
+        }
+      ]
+    },
+    {
+      "id": "cabin",
+      "title": "Cabin",
+      "subtitle": "Check each seating position and all storage areas.",
+      "items": [
+        {
+          "id": "upholstery",
+          "title": "All seat upholstery",
+          "detail": "Inspect every seat for cuts, stains, scuffs, uneven stitching and loose seams."
+        },
+        {
+          "id": "cabin-trim",
+          "title": "Dashboard and door trim",
+          "detail": "Check dashboard surfaces, any wood trim, door panels and passenger-side dash edges for gaps, lifting or loose parts."
+        },
+        {
+          "id": "storage-cupholders",
+          "title": "Cupholders and console storage",
+          "detail": "Cycle cupholders and the console lid; check that closed pieces remain latched when you return to them later."
+        },
+        {
+          "id": "floor-mats",
+          "title": "Floor mats secure and clear of pedals",
+          "detail": "Check mat attachment and position, especially around the accelerator and brake.",
+          "critical": true
+        },
+        {
+          "id": "gloveboxes",
+          "title": "Gloveboxes and lock settings",
+          "detail": "Open and close each fitted glovebox several times. Ask about PIN or locking settings, then recheck the latches later.",
+          "conditional": "Each fitted glovebox"
+        },
+        {
+          "id": "front-seats",
+          "title": "Front seat adjustments and support",
+          "detail": "Test fitted adjustments. Lean back normally in each front seat and listen for popping; check seatback, headrest and adjusted positions hold securely.",
+          "critical": true
+        },
+        {
+          "id": "rear-seats",
+          "title": "Rear seats fold and lock upright",
+          "detail": "Fold and restore the rear seats. Confirm every seatback locks fully and belts remain accessible.",
+          "critical": true
+        },
+        {
+          "id": "seat-belts",
+          "title": "Every seat belt",
+          "detail": "Inspect webbing, buckle and unbuckle each belt, and check secure engagement and retraction.",
+          "critical": true
+        },
+        {
+          "id": "manual-releases",
+          "title": "Emergency manual door releases",
+          "detail": "Have staff demonstrate where the manual releases are and when to use them. Check surrounding covers and trim are securely seated."
+        },
+        {
+          "id": "cabin-lighting",
+          "title": "Map and ambient lights",
+          "detail": "Try touch controls and door-triggered operation for cabin lamps. Check fitted ambient lighting and repeat the lamp check later."
+        },
+        {
+          "id": "flashlight",
+          "title": "Flashlight and dock",
+          "detail": "Remove, test and securely redock the flashlight.",
+          "conditional": "If supplied with the vehicle"
+        },
+        {
+          "id": "rear-controls",
+          "title": "Rear climate and seat controls",
+          "detail": "From the rear seat, operate fitted climate or seat controls and confirm the expected response and actual airflow.",
+          "conditional": "Only controls fitted to this vehicle"
+        }
+      ]
+    },
+    {
+      "id": "controls",
+      "title": "Controls",
+      "subtitle": "Leave enough time for the climate system to respond.",
+      "items": [
+        {
+          "id": "display-surface",
+          "title": "Display glass and bezel finish",
+          "detail": "Have staff remove shipping film where appropriate. Inspect the actual screen and bezel for scratches, chips, bubbles or damage underneath the film."
+        },
+        {
+          "id": "displays-warnings",
+          "title": "Displays and warning messages",
+          "detail": "Inspect the full displays initially and after a lock/wake cycle. Stop and involve staff if a critical warning appears.",
+          "critical": true
+        },
+        {
+          "id": "software-tour",
+          "title": "Software version and vehicle tour",
+          "detail": "Record the installed version, ask staff to confirm the current available software for this vehicle, and complete the screen/vehicle tour."
+        },
+        {
+          "id": "camera-views",
+          "title": "Live camera views",
+          "detail": "Repeat reverse, surround/overhead and both turn-signal camera views where supported. Check the images update and are clear; ask staff about edge distortion.",
+          "critical": true
+        },
+        {
+          "id": "front-wipers",
+          "title": "Front wipers and washer",
+          "detail": "Wet the windshield before testing. Try a single wipe and slow/fast speeds; confirm washer spray and effective wiping.",
+          "critical": true
+        },
+        {
+          "id": "rear-wiper",
+          "title": "Rear wiper and washer",
+          "detail": "Test rear washer spray and wiper operation on wet glass.",
+          "critical": true,
+          "conditional": "If fitted"
+        },
+        {
+          "id": "horn",
+          "title": "Horn",
+          "detail": "Briefly test the horn where staff confirm it is appropriate.",
+          "critical": true
+        },
+        {
+          "id": "cooling",
+          "title": "Air conditioning at every vent",
+          "detail": "Use the same cold setting on both sides with rear air enabled. Run for 3–5 minutes and feel each vent for airflow and cooling.",
+          "critical": true
+        },
+        {
+          "id": "heat-fan",
+          "title": "Heat, fan speeds and air direction",
+          "detail": "Test heating, several fan speeds and airflow directions. Turn music off and listen for unusual climate-system noise.",
+          "critical": true
+        },
+        {
+          "id": "defrost",
+          "title": "Front defrost and rear defog",
+          "detail": "Verify front defrost airflow and rear-defog activation. Mark actual clearing as not tested if the glass is already dry.",
+          "critical": true
+        },
+        {
+          "id": "seat-comfort",
+          "title": "Heated and ventilated seats",
+          "detail": "Test the fitted heating and ventilation functions and allow time to feel a response.",
+          "conditional": "Only fitted seat comfort functions"
+        }
+      ]
+    },
+    {
+      "id": "drive",
+      "title": "Short drive",
+      "subtitle": "Use a quiet route and normal safe inputs; mark unavailable checks not tested.",
+      "items": [
+        {
+          "id": "drive-selection",
+          "title": "Reverse, Drive and Park",
+          "detail": "With staff, foot on the brake and the path clear, select each drive state and check for faults.",
+          "critical": true
+        },
+        {
+          "id": "steering",
+          "title": "Steering centering and tracking",
+          "detail": "On a reasonably flat road, check for a persistent pull, off-center steering or vibration. Keep your hands on the wheel.",
+          "critical": true
+        },
+        {
+          "id": "braking",
+          "title": "Brake-pedal stopping",
+          "detail": "At safe speeds, use the brake pedal and check for smooth stops without unusual pulling or grinding.",
+          "critical": true
+        },
+        {
+          "id": "low-speed-turns",
+          "title": "Low-speed turns in both directions",
+          "detail": "In a clear parking area, turn each way and listen for squealing, grinding, clunks or binding.",
+          "critical": true
+        },
+        {
+          "id": "bumps",
+          "title": "Rattles over small bumps",
+          "detail": "With audio off, listen over ordinary small bumps and note the sound and where it seems to originate."
+        },
+        {
+          "id": "wind-noise",
+          "title": "Wind noise at road speed",
+          "detail": "Listen for persistent whistling or abnormal wind noise on the approved test route."
+        },
+        {
+          "id": "post-drive",
+          "title": "Warnings and cameras after driving",
+          "detail": "Park and recheck warnings and camera views. Tell staff about major noises or abnormal vehicle behavior.",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Access & audio",
+      "subtitle": "Keep other keys away while testing each access method.",
+      "items": [
+        {
+          "id": "ownership",
+          "title": "Vehicle and keys in your Rivian account",
+          "detail": "Confirm this R2 appears in your account and that the vehicle lists all supplied keys.",
+          "critical": true
+        },
+        {
+          "id": "key-card-condition",
+          "title": "Key cards and fob condition",
+          "detail": "Inspect supplied key cards for warping or cracks and the fob for damage. Confirm each fits and works as intended.",
+          "conditional": "Each physical key included in your delivery"
+        },
+        {
+          "id": "physical-keys",
+          "title": "Each supplied physical key",
+          "detail": "Test every supplied key card or fob separately, with other keys and phone keys away from the vehicle.",
+          "critical": true
+        },
+        {
+          "id": "phone-key",
+          "title": "Phone-only lock, wake and drive access",
+          "detail": "With other keys away, use only your phone to lock, walk away, return and unlock. With staff and the brake applied, confirm authorization to select Drive."
+        },
+        {
+          "id": "mirrors",
+          "title": "Mirror adjustment and folding",
+          "detail": "Adjust both mirrors and test fitted folding controls."
+        },
+        {
+          "id": "driver-profiles",
+          "title": "Driver profile save and recall",
+          "detail": "Save and recall a driver profile including seat position. Review listed drivers and add an additional driver if desired."
+        },
+        {
+          "id": "bluetooth-audio",
+          "title": "Bluetooth and every speaker",
+          "detail": "Pair your phone and play familiar music at a moderate volume. Listen at every speaker for distortion, missing bass or rattles; switch sources and return to Bluetooth."
+        },
+        {
+          "id": "connectivity",
+          "title": "Wi-Fi or hotspot data connection",
+          "detail": "On a working Wi-Fi network or hotspot, load fresh content to confirm data works; an existing screen alone may be cached."
+        },
+        {
+          "id": "calls",
+          "title": "Call microphone",
+          "detail": "Place a brief call and confirm the other person can hear you clearly."
+        },
+        {
+          "id": "steering-controls",
+          "title": "Steering-wheel controls",
+          "detail": "Operate the fitted steering-wheel controls and confirm the expected response."
+        },
+        {
+          "id": "navigation",
+          "title": "Navigation and spoken guidance",
+          "detail": "Enter a destination and confirm route display and audible turn instructions."
+        },
+        {
+          "id": "usb",
+          "title": "Fitted USB ports",
+          "detail": "Use a known-good phone and cable to check the fitted USB ports for their intended function."
+        },
+        {
+          "id": "wireless-charging",
+          "title": "Wireless phone charging",
+          "detail": "If using a fitted compatible charging pad, confirm your phone actually charges for at least one minute.",
+          "conditional": "If a compatible wireless charging pad is fitted"
+        }
+      ]
+    },
+    {
+      "id": "app",
+      "title": "App & features",
+      "subtitle": "Confirm only the features supplied or activated for this vehicle.",
+      "items": [
+        {
+          "id": "app-locks",
+          "title": "Remote lock and unlock",
+          "detail": "From the Rivian app, lock and unlock the vehicle and confirm it responds."
+        },
+        {
+          "id": "app-openings",
+          "title": "Remote liftgate and frunk controls",
+          "detail": "Try app liftgate opening/closing and frunk release where supported; watch for the correct response.",
+          "conditional": "Only supported remote controls"
+        },
+        {
+          "id": "remote-climate",
+          "title": "Remote climate before approaching",
+          "detail": "While the car is locked, activate climate remotely before approaching and confirm operation."
+        },
+        {
+          "id": "alarm-pet",
+          "title": "Alarm and Pet Mode demonstration",
+          "detail": "Ask staff to explain the alarm and demonstrate Pet Mode if available, with an empty cabin. A brief demonstration does not establish sustained cooling.",
+          "conditional": "Pet Mode only if available"
+        },
+        {
+          "id": "app-info",
+          "title": "App vehicle information",
+          "detail": "Review location, estimated range, software status and listed drivers for this vehicle."
+        },
+        {
+          "id": "service-resources",
+          "title": "Manual and service resources",
+          "detail": "Locate the in-app owner manual, maintenance and tire information. Ask staff to show relevant diagnostic and service tools."
+        },
+        {
+          "id": "paid-features",
+          "title": "Purchased features and subscriptions",
+          "detail": "Confirm purchased upgrades and any Autonomy+ or Connect+ access, trial end dates and renewal terms.",
+          "conditional": "Only purchased or included services"
+        },
+        {
+          "id": "autonomy",
+          "title": "Driver-assistance setup and demonstration",
+          "detail": "Complete available tutorials and settings. Ask staff to demonstrate supported features in suitable conditions; mark night- or route-dependent functions not tested when unavailable.",
+          "conditional": "Only enabled features; suitable test conditions required"
+        },
+        {
+          "id": "gear-guard",
+          "title": "Gear Guard and Live View",
+          "detail": "Set up recording and Live View where enabled. Confirm available functions operate under your configuration and subscription.",
+          "conditional": "If enabled for this vehicle"
+        }
+      ]
+    },
+    {
+      "id": "after-wake",
+      "title": "After wake",
+      "subtitle": "Revisit intermittent checks after staff help the car sleep, then wake it again. Mark not tested if the conditions cannot be reproduced.",
+      "items": [
+        {
+          "id": "sleep-wake-cycle",
+          "title": "Sleep, wake and warning check",
+          "detail": "With the specialist, close and lock the car and let it enter sleep as instructed. Return and check for new warning messages or unresponsive controls.",
+          "critical": true
+        },
+        {
+          "id": "rear-window-lock-retest",
+          "title": "Rear glass stays closed after locking",
+          "detail": "After closing the rear glass, lock the vehicle, walk away and return to verify its position and seal.",
+          "critical": true,
+          "conditional": "If opening rear glass is fitted"
+        },
+        {
+          "id": "lighting-camera-retest",
+          "title": "Lights and cameras after wake",
+          "detail": "Repeat headlight and map-light operation. Reopen supported camera views and check for flicker, frozen images or a view that fails to load.",
+          "critical": true
+        },
+        {
+          "id": "storage-latches-retest",
+          "title": "Storage latches stay secure",
+          "detail": "Recheck the gloveboxes, cupholders and console lid after the drive or wake cycle. Confirm they remain latched and still open normally."
+        },
+        {
+          "id": "recording-drive",
+          "title": "Recording storage and playback after wake",
+          "detail": "Use an empty, compatible USB-C drive or SSD for supported recording. Confirm recognition and playback, then recheck after the vehicle sleeps and wakes.",
+          "conditional": "If external recording storage is supported and supplied"
+        }
+      ]
+    },
+    {
+      "id": "handover",
+      "title": "Handover",
+      "subtitle": "Leave with every concern recorded and a clear written next step.",
+      "items": [
+        {
+          "id": "issue-evidence",
+          "title": "Evidence for every issue",
+          "detail": "Take a wider location photo plus a close-up or video. Describe the concern and show the delivery specialist."
+        },
+        {
+          "id": "service-record",
+          "title": "Service request and appointment",
+          "detail": "For each unresolved concern, record it in the Rivian app with evidence, request service and select an available appointment. Keep the ticket number and date."
+        },
+        {
+          "id": "significant-faults",
+          "title": "Significant faults resolved and retested",
+          "detail": "Record faults before any reset. If staff performs a suitable reset or repair, repeat the failed check after wake. Resolve significant damage or unsafe operation before accepting.",
+          "critical": true
+        },
+        {
+          "id": "written-remedies",
+          "title": "Written remedy for remaining issues",
+          "detail": "Record the agreed action, responsible person and target date for each remaining concern; obtain written acknowledgment from the specialist."
+        },
+        {
+          "id": "untested-review",
+          "title": "Review skipped and inapplicable checks",
+          "detail": "Mark absent or unpurchased features not applicable. Mark unavailable drive, rain, heat, night or other checks not tested; a short delivery visit cannot rule out every intermittent fault."
+        },
+        {
+          "id": "decision",
+          "title": "Delivery decision recorded",
+          "detail": "Choose accept, accept with documented items, or defer, and record the specialist name and any written acknowledgment."
+        }
+      ]
+    }
+  ]
+}

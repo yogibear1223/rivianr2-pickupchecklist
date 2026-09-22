@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import { blankMeta, blankEntry, mergeDocuments, nextStatus, counts, documentSchema, type Inspection, type Section } from '../lib/model';
+import data from '../lib/checklist.json';
+const sections=data.sections as Section[];const items=sections.flatMap(s=>s.items);
+const base:Inspection={schemaVersion:1,checklistVersion:'test',meta:{...blankMeta(),vin:'7PD2EAAB0VN000001',deliveryDate:'2026-09-24',location:'Sample delivery center'},entries:Object.fromEntries(items.map(i=>[i.id,blankEntry()])),overallNotes:'',deliveryDecision:'undecided'};
+assert.equal(items.length,100);assert.equal(new Set(items.map(i=>i.id)).size,100);
+assert.deepEqual([nextStatus(0),nextStatus(1),nextStatus(2),nextStatus(3),nextStatus('na')],[1,2,3,0,1]);
+assert.equal(counts(base,sections).pending,100);
+let mine=structuredClone(base),theirs=structuredClone(base);mine.entries.paint.status=2;theirs.entries.glass.status=3;
+let result=mergeDocuments(base,mine,theirs);assert.equal(result.conflicts.length,0);assert.equal(result.merged.entries.paint.status,2);assert.equal(result.merged.entries.glass.status,3);
+theirs.entries.paint.status=3;result=mergeDocuments(base,mine,theirs);assert.equal(result.conflicts[0].path,'entries.paint.status');
+const repairBase=structuredClone(base);repairBase.entries.paint.status=2;mine=structuredClone(repairBase);theirs=structuredClone(repairBase);mine.entries.paint.status=3;theirs.entries.paint.resolved=true;
+result=mergeDocuments(repairBase,mine,theirs);assert.ok(result.conflicts.some(c=>c.path==='entries.paint.resolved'));
+const future=structuredClone(base);future.meta.deliveryDate='2026-02-31';assert.equal(documentSchema.safeParse(future).success,false);
+assert.equal(documentSchema.safeParse(base).success,true);
+console.log('PASS: 100 unique checks; exact tap cycle; counts; disjoint merging; same-field conflict; severity/resolution conflict; VIN and date validation.');
