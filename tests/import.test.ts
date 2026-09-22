@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { parseConfigurationText, applyImportedDetails, mergeAccessoryText, MAX_IMPORT_TEXT } from '../lib/configuration-import';
 import { blankMeta } from '../lib/model';
 import { fullInspectionMinutes, sectionMinutes } from '../lib/inspection-time';
-import checklist from '../lib/checklist.json';
+import { deliverySections } from '../lib/inspection-plan';
 
 const field = (text: string, name: string) => parseConfigurationText(text).fields.find(result => result.field === name);
 const summary = `Your configuration
@@ -82,6 +82,6 @@ assert.equal(mergeAccessoryText('R2 Cargo Cover (qty 1)', ['Cargo Cover']), 'R2 
 assert.equal(current.interior, '');
 assert.throws(() => parseConfigurationText('x'.repeat(MAX_IMPORT_TEXT + 1)), /too long/);
 assert.throws(() => applyImportedDetails(current, {}, ['x'.repeat(2100)], false), /too long/);
-assert.deepEqual(fullInspectionMinutes, [60, 90]);
-assert.deepEqual(Object.keys(sectionMinutes), checklist.sections.map(section => section.id));
+assert.deepEqual(fullInspectionMinutes, [15, 20]);
+assert.deepEqual(Object.keys(sectionMinutes), deliverySections.map(section => section.id));
 console.log('Import checks passed: selected summaries, PDF line breaks, ambiguous options, gear receipts, date/VIN handling, safe merge and timing.');

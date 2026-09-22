@@ -1,6 +1,6 @@
 # Rivian R2 Pickup Day
 
-A private mobile web app for a Rivian R2 delivery inspection. It has 100 checks in 12 sections, including a dedicated after-wake recheck, and saves one editable inspection across devices.
+A private mobile web app for a Rivian R2 delivery inspection. It opens with 20 parked pickup checks in four groups, targeting 15–20 minutes within a 30-minute appointment. Ten after-delivery checks have separate progress. One editable record stays available across devices.
 
 ## Use the app
 
@@ -8,17 +8,34 @@ The live app link is listed in [LIVE-APP.md](LIVE-APP.md).
 
 1. Sign in with the same ChatGPT account on each device.
 2. In **Set up vehicle**, enter the full VIN, delivery date, location and configuration. **Import configuration & accessories** can fill recognized details from pasted order text or a selectable-text PDF after you review them.
-3. Tap each inspection box: **Unchecked → Good → Minor issue → Major issue → Unchecked**. These are repeated ordinary taps, not timed double-clicks.
+3. Use **At pickup** for the 20 parked checks. **After delivery** contains first-drive, charging, camera-storage and first-week checks. Tap each inspection box: **Unchecked → Good → Minor issue → Major issue → Unchecked**. These are repeated ordinary taps, not timed double-clicks.
 4. Use **Notes & status** for observations, photo references, Not applicable, or Not tested. Issues also have agreed-action/service-ticket fields and a resolution check.
 5. Wait for **Saved to your account**, or tap **Save now**.
-6. **Export PDF** creates either a complete inspection or an issues-only handoff report. On iPhone, use **Save / Share PDF → Save to Files**, or use the download/open links.
+6. **Export PDF** offers a 20-check pickup report, a complete pickup/follow-up record, or an issues-only report. Every choice includes all recorded issues across stages, including earlier saved concerns. On iPhone, use **Save / Share PDF → Save to Files**, or use the download/open links.
 7. Return to the app and enter the last four VIN characters to reopen the inspection.
 
 On iPhone Safari, **Share → Add to Home Screen** adds an app icon. Network access is needed to open and sync inspections. If a connection drops while editing, a local recovery draft preserves pending changes when browser storage is available. The interface distinguishes unsynced changes from confirmed server saves. This is not a fully offline app.
 
-## Inspection time
+## Pickup timing and follow-up
 
-The top of setup and inspection screens shows **Plan 60–90 min** for the complete checklist. Each section also has an estimated range. These are task-based planning estimates, not measured delivery times or a live countdown. They include a short drive, a brief immediately available charging test, and active after-wake checks. Staff waits, a full sleep cycle, documenting concerns and repairs can add time. Preparing vehicle details before pickup helps. Unperformed checks should stay **Not tested**.
+The default view is **Pickup check · 15–20 min**, with 20 short parked checks:
+
+| Group | Checks | Target |
+| --- | ---: | ---: |
+| Confirm your R2 | 3 | 2 min |
+| Walk around | 7 | 5–7 min |
+| Quick cabin check | 6 | 5–6 min |
+| Handover | 4 | 3–5 min |
+
+This is designed for the user's 30-minute appointment, including the surrounding handover. Prepare details before arrival. Findings can take extra discussion; do not mark an unperformed check Good to meet the time target.
+
+**Driving checks happen only after acceptance.** The separate **After delivery** view has 10 checks for optional camera-storage/Road Cam setup while parked, the first drive, an actual charging session, closer cosmetic review, windows/keys, lights/cameras, comfort controls, audio/ports, sleep/wake and follow-up reporting. Its completion counter does not block completing the 20-item pickup list.
+
+**First week is a planning target.** Confirm the applicable cosmetic-reporting deadline with the delivery specialist in writing, record it in **Handover → Reporting deadline confirmed → Notes & status**, and report concerns promptly in the Rivian app. The app does not assert a universal seven-day warranty, damage-reporting or return entitlement. The confirmed reporting notes appear in every PDF.
+
+### Existing inspection records
+
+Existing metadata, answers, notes, actions and issue resolutions remain in their original records. Recorded entries from the previous detailed checklist are available under **Previously recorded checks** and in the complete PDF. Their issues also appear in the global Issues view and every export. Blank legacy rows are not presented as new work. New grouped checks have distinct IDs so a partial old check never automatically passes a broader new one. Reopening/rendering an old record does not mutate it.
 
 ## Import a configuration or accessory receipt
 
@@ -44,12 +61,14 @@ This project needs a server and database. GitHub Pages alone cannot provide its 
 
 ## Checklist coverage
 
-Your R2; Exterior; Wheels; Lights; Openings; Cabin; Controls; Short drive; Access & audio; App & features; After wake; Handover.
+The default pickup flow follows the supplied **Rivian_R2_Delivery_Day_Checklist.pdf**, adapted from Super EV LOG's video: vehicle/order, exterior condition, quick cabin/equipment checks and documented handover. Page 2's longer added reminders are not all required during pickup. Driving and longer checks are after delivery, as requested by the user.
 
-The uploaded **Rivian-R2-PDI-Checklist.pdf (Rev 5)** is the base. It is adapted in fresh wording and supplemented with battery/charging checks and selected R2 owner observations. Reports are anecdotes, not defect-rate evidence. Configuration-dependent features can be marked not applicable. An untested check is never counted as good.
+The original **Rivian-R2-PDI-Checklist.pdf (Rev 5)** content remains only as the definition for earlier saved entries. All statuses preserve the same meaning: Good, Minor, Major, Unchecked, Not applicable and Not tested. A changed severity reopens a previously resolved concern.
 
 Sources:
 
+- [Super EV LOG delivery video](https://www.youtube.com/watch?v=jAC7ajGA_S4) — source named in the supplied shorter PDF
+- [Rivian service and issue reporting](https://rivian.com/experience/service)
 - [DIY Wrap Club delivery checklist](https://www.diywrapclub.com/a/blog/rivian-r2-delivery-day-checklist-what-to-inspect-on-day-1-free-pdf-download)
 - [Official R2 equipment](https://rivian.com/r2)
 - [Official R2 configurator](https://rivian.com/configurations/builder/r2)
@@ -77,20 +96,21 @@ Hosted authentication is dispatch-owned. `lib/identity.ts` includes a developmen
 Key files:
 
 - `app/pickup-app.tsx`: setup, VIN lookup, mobile checklist, notes, review and export
-- `lib/checklist.json`: versioned inspection content and source notes
+- `lib/inspection-plan.ts`: 20 parked pickup checks, 10 follow-ups, truthful summaries and earlier-record preservation
+- `lib/checklist.json`: original detailed definitions used for earlier saved entries
 - `lib/use-inspection.ts`: autosave, recovery drafts, conflict handling and refresh
 - `app/api/inspections/route.ts`: owner-scoped create/read/update API
 - `lib/pdf-report.ts`: standalone PDF generation and pagination
 - `components/configuration-import.tsx`, `lib/configuration-import.ts`: import review, detection and safe metadata merge
 - `lib/pdf-text.ts`: bounded PDF text extraction using a self-hosted PDF.js worker
-- `components/inspection-time.tsx`, `lib/inspection-time.ts`: total and section planning estimates
+- `components/inspection-time.tsx`, `lib/inspection-time.ts`: 15–20 minute pickup budget and after-delivery guidance
 - `db/schema.ts`, `drizzle/`: database schema and migration
 - `tests/`: tap/merge/validation and SQLite-backed API regression tests; PDF layout fixture
 
 ## Validation
 
-Automated checks cover 100 stable item IDs, the four-state tap sequence, completion counts, valid VIN/date input, independent-field merging, conflicting edits, severity/resolution conflicts, idempotent creation, stale-revision rejection, owner isolation, anonymous rejection, and CSRF request-header validation. Browser checks cover setup, repeated taps, notes and confirmed saves. Full and issue PDF reports were rendered and visually checked, including long notes and page transitions.
+Automated checks cover 20 pickup / 10 follow-up items, preservation of the original 100 item definitions and saved answers, separate phase counts, global issue visibility, severity-change reopening, the four-state tap sequence, completion counts, valid VIN/date input, independent-field merging, conflicting edits, severity/resolution conflicts, idempotent creation, stale-revision rejection, owner isolation, anonymous rejection, and CSRF request-header validation. Browser checks cover setup, repeated taps, notes and confirmed saves. Pickup, complete and issues PDF reports were rendered and visually checked, including long notes, all-stage concerns, reporting instructions and page transitions.
 
-Import checks cover wrapped PDF lines, multiple choices, selected-versus-recommended options, product names containing paint/wheel labels, receipts with unknown items, date/VIN ambiguity, metadata preservation, immutable VINs and duplicate accessories. Real generated multipage PDFs exercise text extraction and recognition, mixed text/blank pages, invalid files, page/size bounds and cancellation. The browser preview connection was unavailable during this update, so the new import UI has not received browser/device interaction verification.
+Import checks cover wrapped PDF lines, multiple choices, selected-versus-recommended options, product names containing paint/wheel labels, receipts with unknown items, date/VIN ambiguity, metadata preservation, immutable VINs and duplicate accessories. Real generated multipage PDFs exercise text extraction and recognition, mixed text/blank pages, invalid files, page/size bounds and cancellation. The browser preview connection has remained unavailable for these updates, so the import and two-stage checklist UI have not received browser/device interaction verification. Core behavior, safe persistence, imports and generated reports are covered by the checks above.
 
 The report font is a subset of DejaVu Sans; see `FONT-LICENSE.txt`. This app is an independent personal inspection aid and is not affiliated with Rivian.

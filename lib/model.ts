@@ -21,6 +21,7 @@ export const blankEntry = (): Entry => ({status:0,note:'',action:'',resolved:fal
 export const blankMeta = (): VehicleMeta => ({vin:'',deliveryDate:'',deliveryTime:'',location:'',inspector:'',trim:'R2 Performance',paint:'Launch Green',wheels:'',interior:'',package:'Launch Package',accessories:'',specialist:'',odometer:'',battery:'',software:''});
 export const labels: Record<string,string> = {'0':'Unchecked','1':'Good','2':'Minor issue','3':'Major issue',na:'Not applicable',later:'Not tested'};
 export const nextStatus = (status: Status):Status => typeof status==='number' ? ((status+1)%4) as Status : 1;
+export const entryWithStatus = (entry: Entry, status: Status): Entry => ({ ...entry, status, resolved: status === entry.status ? entry.resolved : false });
 export const isIssue = (entry?:Entry) => entry?.status===2 || entry?.status===3;
 export const isReviewed = (entry?:Entry) => entry!=null && ([1,2,3,'na'] as Status[]).includes(entry.status);
 export function counts(doc:Inspection,sections:Section[]) {

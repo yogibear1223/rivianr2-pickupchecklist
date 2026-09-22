@@ -1,6 +1,7 @@
 import { inspectionUser } from '@/lib/identity';
 import { getDatabase } from '@/db';
 import { documentSchema, type Inspection } from '@/lib/model';
+import { inspectionSummary } from '@/lib/inspection-plan';
 import { z } from 'zod';
 export const dynamic = 'force-dynamic';
 const headers={'Cache-Control':'no-store, private','Vary':'Cookie','X-Content-Type-Options':'nosniff'};
@@ -26,7 +27,7 @@ export async function GET(request:Request) {
   const row=await db.prepare('SELECT * FROM inspections WHERE id = ? AND user_id = ? AND last4 = ?').bind(id,user,suffix).first<Row>();
   if(!row)return json({error:'No matching inspection in your account.'},404);return json(saved(row));}
  const rows=await db.prepare('SELECT id, document, last4, revision, updated_at, mutation_id FROM inspections WHERE user_id = ? ORDER BY updated_at DESC').bind(user).all<Row>();
- return json({inspections:rows.results.map(r=>{const d=JSON.parse(r.document) as Inspection;const entries=Object.values(d.entries);return {id:r.id,last4:r.last4,deliveryDate:d.meta.deliveryDate,location:d.meta.location,updatedAt:r.updated_at,total:entries.length,completed:entries.filter(e=>[1,2,3,'na'].includes(e.status)).length,issues:entries.filter(e=>[2,3].includes(e.status as number)&&!e.resolved).length};})});
+ return json({inspections:rows.results.map(r=>{const d=JSON.parse(r.document) as Inspection;return {id:r.id,last4:r.last4,deliveryDate:d.meta.deliveryDate,location:d.meta.location,updatedAt:r.updated_at,...inspectionSummary(d)};})});
  }catch(error){return failure(error);}
 }
 const createSchema=z.object({id:z.string().uuid(),mutationId:z.string().uuid(),document:documentSchema});
