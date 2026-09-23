@@ -11,7 +11,7 @@ export const metaSchema = z.object({
  accessories: z.string().max(2000), specialist: short, odometer: short, battery: short, software: short,
 });
 export const entrySchema = z.object({status: z.union([z.literal(0),z.literal(1),z.literal(2),z.literal(3),z.literal('na'),z.literal('later')]), note:z.string().max(4000),action:z.string().max(2000),resolved:z.boolean()});
-export const documentSchema = z.object({schemaVersion:z.literal(1),checklistVersion:z.string().max(80),meta:metaSchema,entries:z.record(z.string().regex(/^[a-z0-9_-]{1,100}$/),entrySchema).refine(v=>Object.keys(v).length<=200),overallNotes:z.string().max(8000),deliveryDecision:z.enum(['undecided','accepted','accepted-with-follow-up','deferred'])});
+export const documentSchema = z.object({schemaVersion:z.literal(1),checklistVersion:z.string().max(80),meta:metaSchema,entries:z.record(z.string().regex(/^[a-z0-9_-]{1,100}$/),entrySchema).refine(v=>Object.keys(v).length<=350),accessoryNames:z.record(z.string().regex(/^accessory-[a-f0-9]{16}$/),short).refine(v=>Object.keys(v).length<=100,'Use no more than 100 accessory items.').optional(),overallNotes:z.string().max(8000),deliveryDecision:z.enum(['undecided','accepted','accepted-with-follow-up','deferred'])});
 export type VehicleMeta = z.infer<typeof metaSchema>;
 export type Entry = z.infer<typeof entrySchema>;
 export type Inspection = z.infer<typeof documentSchema>;
@@ -32,6 +32,7 @@ export function displayDate(value:string) { return value ? new Date(value+'T12:0
 export function flatten(doc:Inspection):Record<string,string|number|boolean> {
  const result:Record<string,string|number|boolean>={overallNotes:doc.overallNotes,deliveryDecision:doc.deliveryDecision};
  for(const [k,v] of Object.entries(doc.meta)) result['meta.'+k]=v;
+ for(const [id,name] of Object.entries(doc.accessoryNames||{})) result['accessoryNames.'+id]=name;
  for(const [id,entry] of Object.entries(doc.entries)) for(const [k,v] of Object.entries(entry)) result['entries.'+id+'.'+k]=v;
  return result;
 }

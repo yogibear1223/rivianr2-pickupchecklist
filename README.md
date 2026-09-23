@@ -1,6 +1,6 @@
 # Rivian R2 Pickup Day
 
-A private mobile web app for a Rivian R2 delivery inspection. It opens with 20 parked pickup checks in four groups, targeting 15–20 minutes within a 30-minute appointment. Ten after-delivery checks have separate progress. One editable record stays available across devices.
+A private mobile web app for a Rivian R2 delivery inspection. It opens with 20 core parked pickup checks in four groups, plus one check for each accessory listed in the vehicle setup, targeting 15–20 minutes within a 30-minute appointment. Ten after-delivery checks have separate progress. One editable record stays available across devices.
 
 ## Use the app
 
@@ -8,17 +8,17 @@ The live app link is listed in [LIVE-APP.md](LIVE-APP.md).
 
 1. Sign in with the same ChatGPT account on each device.
 2. In **Set up vehicle**, enter the full VIN, delivery date, location and configuration. **Import configuration & accessories** can fill recognized details from pasted order text or a selectable-text PDF after you review them.
-3. Use **At pickup** for the 20 parked checks. **After delivery** contains first-drive, charging, camera-storage and first-week checks. Tap each inspection box: **Unchecked → Good → Minor issue → Major issue → Unchecked**. These are repeated ordinary taps, not timed double-clicks.
+3. Use **At pickup** for the 20 core parked checks and your individual ordered accessories. The accessory list in setup accepts one item per line or comma-separated items; imported accessories appear here automatically. **After delivery** contains first-drive, charging, camera-storage and first-week checks. Tap each inspection box: **Unchecked → Good → Minor issue → Major issue → Unchecked**. These are repeated ordinary taps, not timed double-clicks.
 4. Use **Notes & status** for observations, photo references, Not applicable, or Not tested. Issues also have agreed-action/service-ticket fields and a resolution check.
 5. Wait for **Saved to your account**, or tap **Save now**.
-6. **Export PDF** offers a 20-check pickup report, a complete pickup/follow-up record, or an issues-only report. Every choice includes all recorded issues across stages, including earlier saved concerns. On iPhone, use **Save / Share PDF → Save to Files**, or use the download/open links.
+6. **Export PDF** offers a pickup report with each accessory, a complete pickup/follow-up record, or an issues-only report. Every choice includes all recorded issues across stages, including earlier saved concerns. On iPhone, use **Save / Share PDF → Save to Files**, or use the download/open links.
 7. Return to the app and enter the last four VIN characters to reopen the inspection.
 
 On iPhone Safari, **Share → Add to Home Screen** adds an app icon. Network access is needed to open and sync inspections. If a connection drops while editing, a local recovery draft preserves pending changes when browser storage is available. The interface distinguishes unsynced changes from confirmed server saves. This is not a fully offline app.
 
 ## Pickup timing and follow-up
 
-The default view is **Pickup check · 15–20 min**, with 20 short parked checks:
+The default view is **Pickup check · 15–20 min**, with 20 short core parked checks and one extra check per ordered accessory:
 
 | Group | Checks | Target |
 | --- | ---: | ---: |
@@ -27,9 +27,9 @@ The default view is **Pickup check · 15–20 min**, with 20 short parked checks
 | Quick cabin check | 6 | 5–6 min |
 | Handover | 4 | 3–5 min |
 
-This is designed for the user's 30-minute appointment, including the surrounding handover. Prepare details before arrival. Findings can take extra discussion; do not mark an unperformed check Good to meet the time target.
+This is designed for the user's 30-minute appointment, including the surrounding handover. Prepare details before arrival. Each accessory added during setup appears beneath the supplied-equipment check and counts toward pickup progress. Findings or a long accessory list can take extra discussion; do not mark an unperformed check Good to meet the time target.
 
-**Driving checks happen only after acceptance.** The separate **After delivery** view has 10 checks for optional camera-storage/Road Cam setup while parked, the first drive, an actual charging session, closer cosmetic review, windows/keys, lights/cameras, comfort controls, audio/ports, sleep/wake and follow-up reporting. Its completion counter does not block completing the 20-item pickup list.
+**Driving checks happen only after acceptance.** The separate **After delivery** view has 10 checks for optional camera-storage/Road Cam setup while parked, the first drive, an actual charging session, closer cosmetic review, windows/keys, lights/cameras, comfort controls, audio/ports, sleep/wake and follow-up reporting. Its completion counter does not block completing the pickup list.
 
 **First week is a planning target.** Confirm the applicable cosmetic-reporting deadline with the delivery specialist in writing, record it in **Handover → Reporting deadline confirmed → Notes & status**, and report concerns promptly in the Rivian app. The app does not assert a universal seven-day warranty, damage-reporting or return entitlement. The confirmed reporting notes appear in every PDF.
 
@@ -96,7 +96,7 @@ Hosted authentication is dispatch-owned. `lib/identity.ts` includes a developmen
 Key files:
 
 - `app/pickup-app.tsx`: setup, VIN lookup, mobile checklist, notes, review and export
-- `lib/inspection-plan.ts`: 20 parked pickup checks, 10 follow-ups, truthful summaries and earlier-record preservation
+- `lib/inspection-plan.ts`: 20 core parked pickup checks, individual ordered-accessory checks, 10 follow-ups, truthful summaries and earlier-record preservation
 - `lib/checklist.json`: original detailed definitions used for earlier saved entries
 - `lib/use-inspection.ts`: autosave, recovery drafts, conflict handling and refresh
 - `app/api/inspections/route.ts`: owner-scoped create/read/update API
@@ -109,7 +109,7 @@ Key files:
 
 ## Validation
 
-Automated checks cover 20 pickup / 10 follow-up items, preservation of the original 100 item definitions and saved answers, separate phase counts, global issue visibility, severity-change reopening, the four-state tap sequence, completion counts, valid VIN/date input, independent-field merging, conflicting edits, severity/resolution conflicts, idempotent creation, stale-revision rejection, owner isolation, anonymous rejection, and CSRF request-header validation. Browser checks cover setup, repeated taps, notes and confirmed saves. Pickup, complete and issues PDF reports were rendered and visually checked, including long notes, all-stage concerns, reporting instructions and page transitions.
+Automated checks cover 20 core pickup / 10 follow-up items, per-accessory checks and cross-device accessory edits, preservation of the original 100 item definitions and saved answers, separate phase counts, global issue visibility, severity-change reopening, the four-state tap sequence, completion counts, valid VIN/date input, independent-field merging, conflicting edits, severity/resolution conflicts, idempotent creation, stale-revision rejection, owner isolation, anonymous rejection, and CSRF request-header validation. Pickup, complete and issues PDF reports were rendered and visually checked, including individual accessories, long notes, all-stage concerns, reporting instructions and page transitions.
 
 Import checks cover wrapped PDF lines, multiple choices, selected-versus-recommended options, product names containing paint/wheel labels, receipts with unknown items, date/VIN ambiguity, metadata preservation, immutable VINs and duplicate accessories. Real generated multipage PDFs exercise text extraction and recognition, mixed text/blank pages, invalid files, page/size bounds and cancellation. The browser preview connection has remained unavailable for these updates, so the import and two-stage checklist UI have not received browser/device interaction verification. Core behavior, safe persistence, imports and generated reports are covered by the checks above.
 

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { deliverySections, followupSections, currentSections, recordSections, previousSections, makeDocument, inspectionSummary } from '../lib/inspection-plan';
+import { deliverySections, followupSections, currentSections, recordSections, previousSections, makeDocument, inspectionSummary, accessoryItems, pickupSections, accessoryNamesFor } from '../lib/inspection-plan';
 import { blankEntry, blankMeta, counts, documentSchema, mergeDocuments, entryWithStatus } from '../lib/model';
 import legacy from '../lib/checklist.json';
 
@@ -18,6 +18,34 @@ for (const id of pickupIds) fresh.entries[id].status = 1;
 assert.equal(inspectionSummary(fresh).completed, 20);
 assert.equal(counts(fresh, followupSections).pending, 10, 'Follow-up must not block pickup completion or be auto-passed');
 assert.equal(counts(fresh, currentSections).reviewed, 20);
+
+const equipped = makeDocument({ ...fresh.meta, accessories: 'Cargo cover, Floor mats\nR2 compressor; floor MATS' });
+const extras = accessoryItems(equipped.meta.accessories);
+assert.deepEqual(extras.map(item => item.title), ['Cargo cover', 'Floor mats', 'R2 compressor']);
+assert.equal(pickupSections(equipped)[0].items[3].id, extras[0].id, 'Individual items appear directly after the equipment check');
+assert.equal(documentSchema.safeParse(equipped).success, true);
+assert.equal(inspectionSummary(equipped).total, 23);
+assert.equal(Object.keys(equipped.entries).length, 33);
+equipped.entries[extras[0].id].status = 1;
+equipped.entries[extras[1].id] = { status: 2, note: 'Missing at handoff', action: 'Ship later', resolved: false };
+assert.equal(inspectionSummary(equipped).completed, 2);
+assert.equal(inspectionSummary(equipped).issues, 1);
+assert.ok(recordSections(equipped)[0].items.some(item => item.id === extras[1].id));
+const renamed = structuredClone(equipped);
+renamed.meta.accessories = 'R2 compressor, New crossbars';
+renamed.accessoryNames = { ...renamed.accessoryNames, ...accessoryNamesFor(renamed.meta.accessories) };
+assert.equal(inspectionSummary(renamed).total, 22);
+assert.ok(previousSections(renamed).flatMap(section => section.items).some(item => item.title === 'Floor mats'), 'An edited configuration keeps an earlier recorded accessory issue identifiable');
+assert.equal(counts(renamed, recordSections(renamed)).open, 1);
+const accessoryMine = structuredClone(equipped), accessoryTheirs = structuredClone(equipped);
+accessoryMine.entries[extras[0].id].status = 3;
+accessoryTheirs.meta.accessories += '\nCrossbars';
+accessoryTheirs.accessoryNames = { ...accessoryTheirs.accessoryNames, ...accessoryNamesFor(accessoryTheirs.meta.accessories) };
+const accessoryMerge = mergeDocuments(equipped, accessoryMine, accessoryTheirs);
+assert.equal(accessoryMerge.conflicts.length, 0);
+assert.equal(accessoryMerge.merged.entries[extras[0].id].status, 3);
+assert.equal(pickupSections(accessoryMerge.merged)[0].items.length, 7);
+assert.equal(documentSchema.safeParse(accessoryMerge.merged).success, true);
 
 const old = { ...makeDocument(fresh.meta), checklistVersion: 'r2-pickup-2026-09-v1', entries: Object.fromEntries(legacy.sections.flatMap(section => section.items).map(item => [item.id, blankEntry()])) };
 old.entries.paint = { status: 2, note: 'Earlier paint concern', action: 'Original ticket retained', resolved: false };
@@ -46,4 +74,4 @@ assert.equal(new Set(allIds).size, allIds.length, 'Reports must not duplicate an
 const escalated=entryWithStatus({...blankEntry(),status:2,resolved:true},3);
 assert.equal(escalated.resolved,false,'A changed severity must reopen a resolved issue');
 assert.equal(entryWithStatus({...blankEntry(),status:2,resolved:true},2).resolved,true);
-console.log('PASS: 20 parked pickup checks; 10 separate follow-ups; truthful progress; old/unknown entries and cross-device edits preserved.');
+console.log('PASS: 20 core pickup checks plus per-accessory checks; 10 separate follow-ups; truthful progress; old/unknown entries and cross-device edits preserved.');

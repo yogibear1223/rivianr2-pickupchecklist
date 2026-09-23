@@ -1,8 +1,8 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { createInspectionPdf } from '../lib/pdf-report';
 import { blankEntry,blankMeta } from '../lib/model';
-import { deliverySections, recordSections, makeDocument } from '../lib/inspection-plan';
-const doc=makeDocument({...blankMeta(),vin:'7PD2EAAB0VN000001',deliveryDate:'2026-09-24',location:'Sample delivery center',interior:'Black Crater Signature',wheels:'21-inch Liquid Tungsten All-Season'});
+import { deliverySections, recordSections, makeDocument, pickupSections, accessoryItems } from '../lib/inspection-plan';
+const doc=makeDocument({...blankMeta(),vin:'7PD2EAAB0VN000001',deliveryDate:'2026-09-24',location:'Sample delivery center',interior:'Black Crater Signature',wheels:'21-inch Liquid Tungsten All-Season',accessories:'Cargo Cover\nAll-Weather Floor Mats'});
 doc.overallNotes='Sample record for layout verification. Échelle, café — punctuation and accents.';
 doc.deliveryDecision='accepted-with-follow-up';
 for(const item of deliverySections.flatMap(section=>section.items))doc.entries[item.id].status=1;
@@ -12,7 +12,10 @@ doc.entries['follow-drive']={status:2,note:'Sample follow-up after acceptance: a
 doc.entries.glass={status:3,note:'Earlier detailed-checklist observation retained for layout verification. '+('Long note line for pagination, measurement and visual quality review. '.repeat(20)),action:'Sample earlier action. Ticket TEST-LEGACY.',resolved:false};
 doc.entries['quick-reporting-deadline'].note='Sample record: confirm the actual reporting deadline and retain the specialist’s written instructions.';
 doc.entries['wireless-charging']={...blankEntry(),status:'na'};
+const accessories=accessoryItems(doc.meta.accessories);
+doc.entries[accessories[0].id]={status:1,note:'Included at handoff.',action:'',resolved:false};
+doc.entries[accessories[1].id]={status:2,note:'Floor mats missing at handoff.',action:'Delivery specialist will ship. Ticket TEST-ACCESSORY.',resolved:false};
 const sections=recordSections(doc);
 mkdirSync('.sites-runtime/pdf-qa',{recursive:true});
-for(const kind of ['pickup','full','issues']) {const blob=await createInspectionPdf(doc,kind==='pickup'?deliverySections:sections,{issuesOnly:kind==='issues',pickupOnly:kind==='pickup',issueSections:sections,saved:true,updatedAt:'2026-09-22T23:00:00Z'});writeFileSync('.sites-runtime/pdf-qa/'+kind+'.pdf',Buffer.from(await blob.arrayBuffer()));}
+for(const kind of ['pickup','full','issues']) {const blob=await createInspectionPdf(doc,kind==='pickup'?pickupSections(doc):sections,{issuesOnly:kind==='issues',pickupOnly:kind==='pickup',issueSections:sections,saved:true,updatedAt:'2026-09-22T23:00:00Z'});writeFileSync('.sites-runtime/pdf-qa/'+kind+'.pdf',Buffer.from(await blob.arrayBuffer()));}
 console.log('Generated pickup, complete and issues reports with pickup, follow-up and earlier concerns.');

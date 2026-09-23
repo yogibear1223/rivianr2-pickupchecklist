@@ -2,12 +2,12 @@ import legacy from './checklist.json';
 import { blankEntry, counts, type Entry, type Inspection, type Section, type VehicleMeta } from './model';
 
 export type InspectionPhase = 'pickup' | 'followup';
-export const definitionVersion = 'r2-quick-2026-09-v2';
+export const definitionVersion = 'r2-quick-2026-09-v3';
 export const deliverySections: Section[] = [
   { id: 'quick-confirm', title: 'Confirm your R2', subtitle: 'Start with your order and the vehicle in front of you.', items: [
     { id: 'quick-vin', title: 'VIN matches your order', detail: 'Compare the vehicle VIN with your order and paperwork.' },
     { id: 'quick-order-mileage', title: 'Configuration and mileage match', detail: 'Confirm paint, interior and wheels. Photograph the mileage and compare it with the paperwork.' },
-    { id: 'quick-equipment', title: 'Expected accessories are here', detail: 'Check the charger, adapters, air pump and accessories on your order. Collect a plate bracket if needed; note anything shipping separately.' },
+    { id: 'quick-equipment', title: 'Supplied equipment is here', detail: 'Check the charger, adapters and air pump, if included. Collect a plate bracket if needed. Check each ordered accessory below separately.' },
   ] },
   { id: 'quick-exterior', title: 'Walk around', subtitle: 'One lap for visible delivery damage.', items: [
     { id: 'quick-paint', title: 'Paint and body look clean', detail: 'Look for obvious dents, chips, scratches or residue. Photograph any concern.' },
@@ -54,23 +54,51 @@ const currentIds = new Set(currentSections.flatMap(section => section.items.map(
 const legacySections = legacy.sections as Section[];
 export const hasRecordedEntry = (entry?: Entry) => !!entry && (entry.status !== 0 || !!entry.note || !!entry.action || entry.resolved);
 
+export function accessoryItems(accessories: string) {
+  const seen = new Set<string>();
+  return accessories.split(/[\n;,]+/).map(name => name.trim().replace(/\s+/g, ' ')).filter(name => {
+    const key = name.toLocaleLowerCase('en-US');
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).map(name => {
+    let first = 0x811c9dc5, second = 0x2caa1234;
+    for (const char of name.toLocaleLowerCase('en-US')) {
+      const point = char.codePointAt(0)!;
+      first = Math.imul(first ^ point, 0x01000193);
+      second = Math.imul(second ^ point, 0x85ebca6b);
+    }
+    const id = 'accessory-' + (first >>> 0).toString(16).padStart(8, '0') + (second >>> 0).toString(16).padStart(8, '0');
+    return { id, title: name, detail: 'Confirm this ordered or included item is present and in good condition. Note if it will ship separately.' };
+  });
+}
+export const accessoryNamesFor = (accessories: string) => Object.fromEntries(accessoryItems(accessories).map(item => [item.id, item.title]));
+export function pickupSections(doc: Inspection): Section[] {
+  const accessories = accessoryItems(doc.meta.accessories);
+  return deliverySections.map(section => section.id === 'quick-confirm' ? {
+    ...section,
+    items: section.items.flatMap(item => item.id === 'quick-equipment' ? [item, ...accessories] : [item]),
+  } : section);
+}
+
 // Old answers keep their original meaning. A checked component never passes a new grouped task.
 export function previousSections(doc: Inspection): Section[] {
+  const activeIds = new Set([...currentIds, ...accessoryItems(doc.meta.accessories).map(item => item.id)]);
   const previous = legacySections.map(section => ({ ...section, id: 'previous-' + section.id, title: 'Earlier / ' + section.title, subtitle: 'Saved from the previous detailed checklist.', items: section.items.filter(item => !currentIds.has(item.id) && hasRecordedEntry(doc.entries[item.id])) })).filter(section => section.items.length);
-  const knownIds = new Set([...currentIds, ...legacySections.flatMap(section => section.items.map(item => item.id))]);
+  const knownIds = new Set([...activeIds, ...legacySections.flatMap(section => section.items.map(item => item.id))]);
   const unknown = Object.keys(doc.entries).filter(id => !knownIds.has(id) && hasRecordedEntry(doc.entries[id]));
-  if (unknown.length) previous.push({ id: 'previous-other', title: 'Earlier / Other saved checks', subtitle: 'Previously recorded entries retained with their original identifiers.', items: unknown.map(id => ({ id, title: 'Saved check: ' + id, detail: 'Review the original observation and agreed action below.' })) });
+  if (unknown.length) previous.push({ id: 'previous-other', title: 'Earlier / Other saved checks', subtitle: 'Previously recorded entries retained with their original identifiers.', items: unknown.map(id => ({ id, title: doc.accessoryNames?.[id] || 'Saved check: ' + id, detail: id.startsWith('accessory-') ? 'Accessory previously listed in your configuration. Confirm its delivery or follow-up status.' : 'Review the original observation and agreed action below.' })) });
   return previous;
 }
 export function recordSections(doc: Inspection): Section[] {
   return [
-    ...deliverySections.map(section => ({ ...section, title: 'Pickup / ' + section.title })),
+    ...pickupSections(doc).map(section => ({ ...section, title: 'Pickup / ' + section.title })),
     ...followupSections.map(section => ({ ...section, title: 'After delivery / ' + section.title })),
     ...previousSections(doc),
   ];
 }
-export const makeDocument = (meta: VehicleMeta): Inspection => ({ schemaVersion: 1, checklistVersion: definitionVersion, meta, entries: Object.fromEntries(currentSections.flatMap(section => section.items).map(item => [item.id, blankEntry()])), overallNotes: '', deliveryDecision: 'undecided' });
+export const makeDocument = (meta: VehicleMeta): Inspection => ({ schemaVersion: 1, checklistVersion: definitionVersion, meta, entries: Object.fromEntries([...currentSections.flatMap(section => section.items), ...accessoryItems(meta.accessories)].map(item => [item.id, blankEntry()])), accessoryNames: accessoryNamesFor(meta.accessories), overallNotes: '', deliveryDecision: 'undecided' });
 export function inspectionSummary(doc: Inspection) {
-  const pickup = counts(doc, deliverySections), all = counts(doc, recordSections(doc));
+  const pickup = counts(doc, pickupSections(doc)), all = counts(doc, recordSections(doc));
   return { total: pickup.total, completed: pickup.reviewed, issues: all.open };
 }

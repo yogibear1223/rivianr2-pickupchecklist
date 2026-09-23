@@ -5,7 +5,7 @@ export async function createInspectionPdf(doc:Inspection,sections:Section[],opti
  const pdf=new jsPDF({unit:'pt',format:'letter',compress:true,putOnlyUsedFonts:true});
  pdf.addFileToVFS('Inspection-Regular.ttf',reportFonts.normal);pdf.addFont('Inspection-Regular.ttf','Inspection','normal');
  pdf.addFileToVFS('Inspection-Bold.ttf',reportFonts.bold);pdf.addFont('Inspection-Bold.ttf','Inspection','bold');
- pdf.setProperties({title:'R2 Delivery Inspection - '+doc.meta.vin.slice(-4),subject:options.issuesOnly?'Recorded issues':options.pickupOnly?'20-check parked pickup inspection':'Pickup and follow-up record',creator:'R2 Pickup Day'});
+ pdf.setProperties({title:'R2 Delivery Inspection - '+doc.meta.vin.slice(-4),subject:options.issuesOnly?'Recorded issues':options.pickupOnly?'Parked pickup inspection and ordered accessories':'Pickup and follow-up record',creator:'R2 Pickup Day'});
  const W=612,H=792,M=43,CW=W-M*2;let y=45;const bottom=H-52;
  const ink:[number,number,number]=[32,49,41],muted:[number,number,number]=[88,105,88];
  const sanitize=(v:string)=>v.replace(/[^\u0020-\u024e\u2000-\u206f\u20a0-\u20cf\n\t]/g,'?').replace(/\t/g,'  ');
@@ -19,7 +19,7 @@ export async function createInspectionPdf(doc:Inspection,sections:Section[],opti
  const sectionTitle=(title:string,subtitle?:string)=>{ensure(170);y+=14;pdf.setDrawColor(200,210,194);pdf.line(M,y-8,W-M,y-8);paragraph(title,15,true);if(subtitle)paragraph(subtitle,9,false,muted);y+=11;};
  font(11,true,muted);pdf.text('R2  /  PICKUP DAY',M,y);y+=33;
  paragraph(options.issuesOnly?'Recorded concerns':options.pickupOnly?'Pickup checklist':'Pickup & follow-up',26,true);y+=6;
- paragraph(options.pickupOnly?'20 parked checks • 15–20 minute target • Driving checks start after acceptance.':'Pickup and after-delivery findings. Driving checks are completed after acceptance.',9,false,muted);y+=6;
+ paragraph(options.pickupOnly?'20 core parked checks plus ordered accessories • 15–20 minute target • Driving starts after acceptance.':'Pickup and after-delivery findings. Driving checks are completed after acceptance.',9,false,muted);y+=6;
  paragraph('Exported '+new Date().toLocaleString()+'  •  '+(options.saved?'Saved inspection':'DRAFT — current edits not confirmed synced'),9,false,muted);y+=13;
  const c=counts(doc,sections),allConcerns=counts(doc,options.issueSections||sections);paragraph(`${options.pickupOnly?'Pickup: ':''}${c.reviewed} of ${c.total} reviewed  |  ${c.good} good  |  ${c.minor} minor  |  ${c.major} major`,11,true);paragraph(`${c.pending} unchecked / not tested  |  ${c.na} not applicable  |  ${allConcerns.open} unresolved issues across the record`,9,false,muted);y+=16;
  const metaRows:[string,string][]=[['VIN',doc.meta.vin],['Delivery',displayDate(doc.meta.deliveryDate)+(doc.meta.deliveryTime?' at '+doc.meta.deliveryTime:'')],['Location',doc.meta.location],['Inspector / specialist',[doc.meta.inspector,doc.meta.specialist].filter(Boolean).join(' / ')||'Not recorded'],['Trim / package',[doc.meta.trim,doc.meta.package].filter(Boolean).join(' / ')],['Exterior / interior',[doc.meta.paint,doc.meta.interior].filter(Boolean).join(' / ')],['Wheels & tires',doc.meta.wheels||'Not recorded'],['Options & accessories',doc.meta.accessories||'Not recorded'],['Handoff readings',[doc.meta.odometer?'Odometer: '+doc.meta.odometer:'',doc.meta.battery?'Battery: '+doc.meta.battery:'',doc.meta.software?'Software: '+doc.meta.software:''].filter(Boolean).join(' | ')||'Not recorded']];
