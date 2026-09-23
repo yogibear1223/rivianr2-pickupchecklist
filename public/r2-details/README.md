@@ -13,3 +13,5 @@ Normalized crop coordinates below refer to the 2000 × 1250 display of the 3584 
 | front-seats.webp | Screenshot 2026-09-23 at 3.12.21ΓÇ»PM.png | 24, 365, 1470, 1074 |
 
 The gray context and color masks are functional app overlays. The reference configuration does not automatically change to match the user's vehicle options. No Rivian affiliation or permissive artwork license is claimed.
+
+`open-doors.webp` is a 1000 × 490 crop of the supplied screenshot indexed 010 (normalized crop: 160, 440, 1430, 1062), used as an intermediate camera view when entering the cabin. The transition crossfades to an already-open door and zooms toward it; it does not simulate articulated door geometry.

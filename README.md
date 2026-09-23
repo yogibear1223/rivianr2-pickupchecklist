@@ -123,3 +123,7 @@ The report font is a subset of DejaVu Sans; see `FONT-LICENSE.txt`. This app is 
 The pickup list is a continuous exterior lap (front → passenger side → rear → driver side), then cabin and seated handover. A sticky official Rivian R2 image sequence rotates as the active stop changes. Gray artwork retains context; color highlights the current area. Interior and open-compartment checks switch to cropped views from the supplied configurator screenshots, with area-specific highlight masks. Reduced-motion preferences switch views without animation. The reference vehicle is Launch Green and does not represent the saved configuration. Artwork provenance is in public/r2-360/README.md.
 
 Detail artwork extraction and provenance: `public/r2-details/README.md`. The five optimized crops total approximately 150 KB and exclude browser chrome, notifications and order/sidebar content.
+
+### Motion and highlight rendering
+
+The guide decodes images before transitions, interpolates adjacent exterior frames, and eases toward the next stop as it approaches the reading line. Canvas snapshots allow interrupted transitions to continue from what is actually visible. Entering the cabin blends through the open-door reference and zooms toward the door before showing the interior. This is a composed image transition, not a hinged-door 3D simulation. Highlights use curved paths following visible body seams, wheel arches, upholstery and display contours. Reduced motion shows the destination directly. The rendering canvas maintains a fixed aspect ratio to avoid layout shifts.
