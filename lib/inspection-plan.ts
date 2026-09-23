@@ -1,9 +1,11 @@
 import legacy from './checklist.json';
+import { routeSections } from './inspection-route';
+export { routeSections as deliverySections } from './inspection-route';
 import { blankEntry, counts, type Entry, type Inspection, type Section, type VehicleMeta } from './model';
 
 export type InspectionPhase = 'pickup' | 'followup';
-export const definitionVersion = 'r2-quick-2026-09-v3';
-export const deliverySections: Section[] = [
+export const definitionVersion = 'r2-route-2026-09-v4';
+const previousDeliverySections: Section[] = [
   { id: 'quick-confirm', title: 'Confirm your R2', subtitle: 'Start with your order and the vehicle in front of you.', items: [
     { id: 'quick-vin', title: 'VIN matches your order', detail: 'Compare the vehicle VIN with your order and paperwork.' },
     { id: 'quick-order-mileage', title: 'Configuration and mileage match', detail: 'Confirm paint, interior and wheels. Photograph the mileage and compare it with the paperwork.' },
@@ -49,9 +51,10 @@ export const followupSections: Section[] = [
     { id: 'follow-report', title: 'Report and track remaining concerns', detail: 'Submit concerns through the Rivian app promptly. Keep photos, service-request numbers and agreed next steps here; follow the deadline confirmed by your delivery team.' },
   ] },
 ];
+const deliverySections = routeSections;
 export const currentSections = [...deliverySections, ...followupSections];
 const currentIds = new Set(currentSections.flatMap(section => section.items.map(item => item.id)));
-const legacySections = legacy.sections as Section[];
+const legacySections = [...legacy.sections, ...previousDeliverySections] as Section[];
 export const hasRecordedEntry = (entry?: Entry) => !!entry && (entry.status !== 0 || !!entry.note || !!entry.action || entry.resolved);
 
 export function accessoryItems(accessories: string) {
@@ -75,7 +78,7 @@ export function accessoryItems(accessories: string) {
 export const accessoryNamesFor = (accessories: string) => Object.fromEntries(accessoryItems(accessories).map(item => [item.id, item.title]));
 export function pickupSections(doc: Inspection): Section[] {
   const accessories = accessoryItems(doc.meta.accessories);
-  return deliverySections.map(section => section.id === 'quick-confirm' ? {
+  return deliverySections.map(section => section.items.some(item => item.id === 'quick-equipment') ? {
     ...section,
     items: section.items.flatMap(item => item.id === 'quick-equipment' ? [item, ...accessories] : [item]),
   } : section);

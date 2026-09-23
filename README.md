@@ -1,6 +1,6 @@
 # Rivian R2 Pickup Day
 
-A private mobile web app for a Rivian R2 delivery inspection. It opens with 20 core parked pickup checks in four groups, plus one check for each accessory listed in the vehicle setup, targeting 15–20 minutes within a 30-minute appointment. Ten after-delivery checks have separate progress. One editable record stays available across devices.
+A private mobile web app for a Rivian R2 delivery inspection. It opens with 20 core parked pickup checks along seven physical stops, plus one check for each accessory listed in the vehicle setup, targeting 15–20 minutes within a 30-minute appointment. Ten after-delivery checks have separate progress. One editable record stays available across devices.
 
 ## Use the app
 
@@ -22,10 +22,13 @@ The default view is **Pickup check · 15–20 min**, with 20 short core parked c
 
 | Group | Checks | Target |
 | --- | ---: | ---: |
-| Confirm your R2 | 3 | 2 min |
-| Walk around | 7 | 5–7 min |
-| Quick cabin check | 6 | 5–6 min |
-| Handover | 4 | 3–5 min |
+| Front & frunk | 3 | 2–3 min |
+| Passenger side | 2 | 2 min |
+| Rear & cargo | 2 + accessories | 2–3 min |
+| Driver side | 3 | 2–3 min |
+| Cabin pass | 2 | 2–3 min |
+| Driver’s seat | 4 | 3–4 min |
+| Handover | 4 | 2 min |
 
 This is designed for the user's 30-minute appointment, including the surrounding handover. Prepare details before arrival. Each accessory added during setup appears beneath the supplied-equipment check and counts toward pickup progress. Findings or a long accessory list can take extra discussion; do not mark an unperformed check Good to meet the time target.
 
@@ -114,3 +117,7 @@ Automated checks cover 20 core pickup / 10 follow-up items, per-accessory checks
 Import checks cover wrapped PDF lines, multiple choices, selected-versus-recommended options, product names containing paint/wheel labels, receipts with unknown items, date/VIN ambiguity, metadata preservation, immutable VINs and duplicate accessories. Real generated multipage PDFs exercise text extraction and recognition, mixed text/blank pages, invalid files, page/size bounds and cancellation. The browser preview connection has remained unavailable for these updates, so the import and two-stage checklist UI have not received browser/device interaction verification. Core behavior, safe persistence, imports and generated reports are covered by the checks above.
 
 The report font is a subset of DejaVu Sans; see `FONT-LICENSE.txt`. This app is an independent personal inspection aid and is not affiliated with Rivian.
+
+## Scroll-linked area guide
+
+The pickup list is a continuous exterior lap (front → passenger side → rear → driver side), then cabin and seated handover. A sticky official Rivian R2 image sequence rotates as the active stop changes. Gray artwork retains context; color highlights the current area. Interior regions are approximate exterior annotations. Reduced-motion preferences switch views without animation. The reference vehicle is Launch Green and does not represent the saved configuration. Artwork provenance is in public/r2-360/README.md.

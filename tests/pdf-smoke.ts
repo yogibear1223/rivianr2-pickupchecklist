@@ -6,8 +6,8 @@ const doc=makeDocument({...blankMeta(),vin:'7PD2EAAB0VN000001',deliveryDate:'202
 doc.overallNotes='Sample record for layout verification. Échelle, café — punctuation and accents.';
 doc.deliveryDecision='accepted-with-follow-up';
 for(const item of deliverySections.flatMap(section=>section.items))doc.entries[item.id].status=1;
-doc.entries['quick-paint']={status:2,note:'Small paint chip on passenger-side front door, near the lower edge. Photo 04.',action:'Delivery specialist will document paint repair. Ticket TEST-001.',resolved:false};
-doc.entries['quick-wheels-tires'].status='later';
+doc.entries['route-front-body']={status:2,note:'Small paint chip on passenger-side front door, near the lower edge. Photo 04.',action:'Delivery specialist will document paint repair. Ticket TEST-001.',resolved:false};
+doc.entries['route-passenger-front'].status='later';
 doc.entries['follow-drive']={status:2,note:'Sample follow-up after acceptance: a rattle during ordinary driving. Photo 07.',action:'Review with service. Ticket TEST-FOLLOWUP.',resolved:false};
 doc.entries.glass={status:3,note:'Earlier detailed-checklist observation retained for layout verification. '+('Long note line for pagination, measurement and visual quality review. '.repeat(20)),action:'Sample earlier action. Ticket TEST-LEGACY.',resolved:false};
 doc.entries['quick-reporting-deadline'].note='Sample record: confirm the actual reporting deadline and retain the specialist’s written instructions.';

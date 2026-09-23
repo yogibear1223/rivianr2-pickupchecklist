@@ -1,6 +1,6 @@
 // Budget for the short parked inspection within a 30-minute delivery appointment.
 export const sectionMinutes: Record<string, readonly [number, number]> = {
-  'quick-confirm': [2, 2], 'quick-exterior': [5, 7], 'quick-cabin': [5, 6], 'quick-handover': [3, 5],
+  'route-front': [2, 3], 'route-passenger': [2, 2], 'route-rear': [2, 3], 'route-driver': [2, 3], 'route-cabin': [2, 3], 'route-seat': [3, 4], 'route-handover': [2, 2],
 };
 export const fullInspectionMinutes = Object.values(sectionMinutes).reduce(
   (total, range) => [total[0] + range[0], total[1] + range[1]], [0, 0],
