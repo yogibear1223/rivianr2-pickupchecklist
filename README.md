@@ -127,9 +127,3 @@ Detail artwork extraction and provenance: `public/r2-details/README.md`. The fiv
 ### Motion and highlight rendering
 
 The guide decodes images before transitions, interpolates adjacent exterior frames, and eases toward the next stop as it approaches the reading line. Canvas snapshots allow interrupted transitions to continue from what is actually visible. Entering the cabin blends through the open-door reference and zooms toward the door before showing the interior. This is a composed image transition, not a hinged-door 3D simulation. Highlights use curved paths following visible body seams, wheel arches, upholstery and display contours. Reduced motion shows the destination directly. The rendering canvas maintains a fixed aspect ratio to avoid layout shifts.
-
-### Recorded opening transitions (September 23)
-
-Three cropped, silent clips from the owner's configurator recording now supply actual hood, liftgate, and driver-side door motion (about 210 KB combined). The guide plays each transition once when entering its relevant area and blends into the existing contoured inspection highlight. The 72-frame exterior rotation remains scroll driven. Rapid navigation cancels the previous animation, and reduced-motion settings or unavailable/blocked playback use the reference stills. No loading frames, account/sidebar content, or audio from the recording are included. Interior entry is a crossfade, not a continuous 3D camera path through a door; the source recording does not contain that path.
-
-Validated inline muted clip playback and rapid stop navigation in the managed browser preview, plus TypeScript checking and the production build. Physical iOS Safari/Home Screen playback remains unverified; the still-image fallback is retained.
