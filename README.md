@@ -120,4 +120,6 @@ The report font is a subset of DejaVu Sans; see `FONT-LICENSE.txt`. This app is 
 
 ## Scroll-linked area guide
 
-The pickup list is a continuous exterior lap (front → passenger side → rear → driver side), then cabin and seated handover. A sticky official Rivian R2 image sequence rotates as the active stop changes. Gray artwork retains context; color highlights the current area. Interior regions are approximate exterior annotations. Reduced-motion preferences switch views without animation. The reference vehicle is Launch Green and does not represent the saved configuration. Artwork provenance is in public/r2-360/README.md.
+The pickup list is a continuous exterior lap (front → passenger side → rear → driver side), then cabin and seated handover. A sticky official Rivian R2 image sequence rotates as the active stop changes. Gray artwork retains context; color highlights the current area. Interior and open-compartment checks switch to cropped views from the supplied configurator screenshots, with area-specific highlight masks. Reduced-motion preferences switch views without animation. The reference vehicle is Launch Green and does not represent the saved configuration. Artwork provenance is in public/r2-360/README.md.
+
+Detail artwork extraction and provenance: `public/r2-details/README.md`. The five optimized crops total approximately 150 KB and exclude browser chrome, notifications and order/sidebar content.
